@@ -13,10 +13,11 @@ export function getAccountElements(): Element[] {
 export function getAccountName(
     accountElement: Element,
 ): string {
-    return accountElement.querySelector("div.prodName")!.textContent!
+    let trimmed = accountElement.querySelector("div.prodName")!.textContent!
         .trim()
         .replace("\n", "")
         .replace("\t", "");
+    return `Sun Life: ${trimmed}`;
 }
 
 export function getOpeningBalance(

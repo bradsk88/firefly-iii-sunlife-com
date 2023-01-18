@@ -5,9 +5,6 @@ import {PageAccount} from "../common/accounts";
 import {runOnURLMatch} from "../common/buttons";
 import {runOnContentChange} from "../common/autorun";
 
-// TODO: You will need to update manifest.json so this file will be loaded on
-//  the correct URL.
-
 interface TransactionScrape {
     pageAccount: PageAccount;
     pageTransactions: TransactionStore[];
@@ -46,8 +43,6 @@ async function doScrape(isAutoRun: boolean): Promise<TransactionScrape> {
 const buttonId = 'firefly-iii-export-transactions-button';
 
 function addButton() {
-    // TODO: This is where you add a "scrape" button to the page where the
-    //  account's transactions are listed.
     const button = document.createElement("button");
     button.textContent = "Export Transactions"
     button.addEventListener("click", async () => doScrape(false), false);
@@ -74,7 +69,7 @@ function enableAutoRun() {
 // If your manifest.json allows your content script to run on multiple pages,
 // you can call this function more than once, or set the urlPath to "".
 runOnURLMatch(
-    'accounts/main/details', // TODO: Set this to your transactions page URL
+    'mbrportal/req/secure/pphp/personalizedWelcome',
     () => !!document.getElementById(buttonId),
     () => {
         pageAlreadyScraped = false;
@@ -83,6 +78,6 @@ runOnURLMatch(
 )
 
 runOnContentChange(
-    'accounts/main/details', // TODO: Set this to your transactions page URL
+    'mbrportal/req/secure/pphp/personalizedWelcome',
     enableAutoRun,
 )

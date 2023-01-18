@@ -29,7 +29,7 @@ async function scrapeAccountsFromPage(isAutoRun: boolean): Promise<AccountStore[
             openingBalanceBalance = `${openingBalance.balance}`;
         }
         const as: AccountStore = {
-            name: `Sun Life: ${accountName}`,
+            name: accountName,
             accountNumber: null,
             openingBalance: openingBalanceBalance,
             openingBalanceDate: openingBalance?.date,

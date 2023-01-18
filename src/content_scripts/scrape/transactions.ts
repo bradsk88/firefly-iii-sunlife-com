@@ -1,10 +1,10 @@
-import {TransactionStore} from "firefly-iii-typescript-sdk-fetch";
+import {TransactionStore, TransactionTypeProperty} from "firefly-iii-typescript-sdk-fetch";
 import {AccountRead} from "firefly-iii-typescript-sdk-fetch/dist/models/AccountRead";
+import {getAccountElements, getAccountName, getOpeningBalance} from "./accounts";
+import {priceFromString} from "../../common/prices";
 
 export function getButtonDestination(): Element {
-    // TODO: Find a DOM element on the page where the manual "export to firefly"
-    //  button should go.
-    return document.body;
+    return document.querySelector("div.content-links:first-child")!
 }
 
 /**
@@ -13,9 +13,7 @@ export function getButtonDestination(): Element {
 export async function getCurrentPageAccount(
     accounts: AccountRead[],
 ): Promise<AccountRead> {
-    // TODO: Find the account name on the page.
-    const accountName = "<implement this>";
-    // Use that to find the Firefly III account ID from the provided list.
+    const accountName = getAccountName(getAccountElements()[0]);
     return accounts.find(
         acct => acct.attributes.name === accountName,
     )!;
@@ -27,7 +25,17 @@ export async function getCurrentPageAccount(
 export function scrapeTransactionsFromPage(
     pageAccount: AccountRead,
 ): TransactionStore[] {
-    // TODO: This is where you implement the scraper to pull the individual
-    //  transactions from the page
-    return [];
+    const oldBal = priceFromString(pageAccount.attributes.currentBalance!);
+    const pageBal = getOpeningBalance(getAccountElements()[0])?.balance;
+    const diff = Number(pageBal! - oldBal).toFixed(2);
+    return [{
+        errorIfDuplicateHash: true,
+        transactions: [{
+            type: TransactionTypeProperty.Deposit,
+            description: "Balance update",
+            destinationId: pageAccount.id,
+            amount: `${diff}`,
+            date: new Date(),
+        }]
+    }];
 }
