@@ -7,11 +7,11 @@ import {AccountRead} from "firefly-iii-typescript-sdk-fetch/dist/models/AccountR
 export async function getCurrentPageAccount(
     accounts: AccountRead[],
 ): Promise<AccountRead> {
-    // TODO: Find either the account number or account name on the page.
-    const accountNumber = "<implement this>";
+    // TODO: Find the account name on the page.
+    const accountName = "<implement this>";
     // Use that to find the Firefly III account ID from the provided list.
     return accounts.find(
-        acct => acct.attributes.accountNumber === accountNumber,
+        acct => acct.attributes.name === accountName,
     )!;
 }
 

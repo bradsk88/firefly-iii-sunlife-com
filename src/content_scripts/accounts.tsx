@@ -7,16 +7,12 @@ import {AutoRunState} from "../background/auto_state";
 import {
     getAccountElements,
     getAccountName,
-    getAccountNumber,
     getButtonDestination,
     getOpeningBalance
 } from "./scrape/accounts";
 import {openAccountForAutoRun} from "./auto_run/accounts";
 import {runOnURLMatch} from "../common/buttons";
 import {runOnContentChange} from "../common/autorun";
-
-// TODO: You will need to update manifest.json so this file will be loaded on
-//  the correct URL.
 
 let pageAlreadyScraped = false;
 
@@ -26,20 +22,15 @@ async function scrapeAccountsFromPage(isAutoRun: boolean): Promise<AccountStore[
     }
 
     const accounts = getAccountElements().map(element => {
-        const accountNumber = getAccountNumber(element)
         const accountName = getAccountName(element);
         const openingBalance = getOpeningBalance(element);
-        // TODO: Double-check these values. You may need to update them based
-        //  on the account element or bank.
         let openingBalanceBalance: string | undefined;
         if (openingBalance) {
-            openingBalanceBalance = `-${openingBalance.balance}`;
+            openingBalanceBalance = `${openingBalance.balance}`;
         }
         const as: AccountStore = {
-            // iban: "12345", // Not all banks have an IBAN
-            // bic: "123", // Not all banks have an BIC
-            name: accountName,
-            accountNumber: accountNumber,
+            name: `Sun Life: ${accountName}`,
+            accountNumber: null,
             openingBalance: openingBalanceBalance,
             openingBalanceDate: openingBalance?.date,
             type: ShortAccountTypeProperty.Asset,
@@ -67,7 +58,10 @@ function addButton() {
     const button = document.createElement("button");
     button.id = buttonId;
     button.textContent = "Export Accounts"
-    button.addEventListener("click", () => scrapeAccountsFromPage(false), false);
+    button.addEventListener("click", (evt) => {
+        evt.preventDefault();
+        scrapeAccountsFromPage(false)
+    }, false);
     getButtonDestination().append(button);
 }
 
@@ -90,7 +84,7 @@ function enableAutoRun() {
 }
 
 runOnURLMatch(
-    'accounts/main/details', // TODO: Set this to your accounts page URL
+    'mbrportal/req/secure/pphp/personalizedWelcome',
     () => !!document.getElementById(buttonId),
     () => {
         pageAlreadyScraped = false;
@@ -99,6 +93,6 @@ runOnURLMatch(
 );
 
 runOnContentChange(
-    'accounts/main/details', // TODO: Set this to your accounts page URL
+    'mbrportal/req/secure/pphp/personalizedWelcome',
     enableAutoRun,
 )

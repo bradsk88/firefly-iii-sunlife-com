@@ -1,3 +1,3 @@
-export const autoRunStartURL = ''; // TODO: Put the URL where the auto run should start
-export const extensionId = ''; // TODO: Put your extension ID here
+export const autoRunStartURL = 'https://www.sunnet.sunlife.com/signin/mysunlife/home.wca';
+export const extensionId = 'cgplpaidcdcdlpedggoflbcfjfefgbpd'; // TODO: Register this
 export const hubExtensionId = 'kcghjdbnjdaabfigmmjgmgiaehjidpoh';
