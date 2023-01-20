@@ -1,3 +1,4 @@
+export const bankDomain = 'sunlife.com';
 export const autoRunStartURL = 'https://www.sunnet.sunlife.com/signin/mysunlife/home.wca';
 export const extensionPrimaryColorHex = 'febe10';
 export const extensionSecondaryColorHex = '003946';
