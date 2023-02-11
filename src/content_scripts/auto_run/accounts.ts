@@ -1,6 +1,6 @@
-import {sha512} from "js-sha512";
 import {AutoRunState} from "../../background/auto_state";
 import {getAccountElements, getAccountName} from "../scrape/accounts";
+import {isSingleAccountBank} from "../../extensionid";
 
 function findNextAccountElement(accountName: string): Element | undefined {
     // You probably shouldn't need to modify the function.
@@ -34,6 +34,9 @@ export function openAccountForAutoRun() {
         .then(accountElement => {
             if (accountElement) {
                 navigateToAccount(accountElement);
+                return;
+            }
+            if (isSingleAccountBank) {
                 return;
             }
             chrome.runtime.sendMessage({
