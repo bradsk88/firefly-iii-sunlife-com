@@ -70,8 +70,10 @@ function enableAutoRun() {
 // you can call this function more than once, or set the urlPath to "".
 runOnURLMatch(
     'mbrportal/req/secure/pphp/personalizedWelcome',
-    () => !!document.getElementById(buttonId),
     () => {
+        if (!!document.getElementById(buttonId)) {
+            return
+        }
         pageAlreadyScraped = false;
         addButton();
     },

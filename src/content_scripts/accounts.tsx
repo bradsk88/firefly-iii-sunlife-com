@@ -85,8 +85,10 @@ function enableAutoRun() {
 
 runOnURLMatch(
     'mbrportal/req/secure/pphp/personalizedWelcome',
-    () => !!document.getElementById(buttonId),
     () => {
+        if (!!document.getElementById(buttonId)) {
+            return;
+        }
         pageAlreadyScraped = false;
         addButton();
     },
