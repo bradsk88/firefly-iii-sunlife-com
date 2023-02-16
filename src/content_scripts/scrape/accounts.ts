@@ -6,8 +6,16 @@ export function getButtonDestination(): Element {
     return document.querySelector("div.content-links:first-child")!
 }
 
+export function isPageReadyForScraping(): boolean {
+    return true;
+}
+
 export function getAccountElements(): Element[] {
     return Array.from(document.querySelectorAll("div#workplace div.product-links div.row").values());
+}
+
+export function shouldSkipScrape(accountElement: Element): boolean {
+    return false;
 }
 
 export function getAccountName(

@@ -1,4 +1,3 @@
-import {TransactionStore, TransactionTypeProperty} from "firefly-iii-typescript-sdk-fetch";
 import {AccountRead} from "firefly-iii-typescript-sdk-fetch/dist/models/AccountRead";
 import {getAccountElements, getAccountName, getOpeningBalance} from "./accounts";
 import {priceFromString} from "../../common/prices";
@@ -19,23 +18,35 @@ export async function getCurrentPageAccount(
     )!;
 }
 
-/**
- * @param pageAccount The Firefly III account for the current page
- */
-export function scrapeTransactionsFromPage(
-    pageAccount: AccountRead,
-): TransactionStore[] {
+export function isPageReadyForScraping(): boolean {
+    return true;
+}
+
+export function getRowElements(): Element[] {
+    return getAccountElements();
+}
+
+export function getRowDate(el: Element): Date {
+    return new Date();
+}
+
+function isRowLoading(r: Element): boolean {
+    return false;
+}
+
+export function getRowAmount(pageAccount: AccountRead, r: Element): number {
+    if (isRowLoading(r)) {
+        throw new Error("Page is not ready for scraping")
+    }
     const oldBal = priceFromString(pageAccount.attributes.currentBalance!);
     const pageBal = getOpeningBalance(getAccountElements()[0])?.balance;
-    const diff = Number(pageBal! - oldBal).toFixed(2);
-    return [{
-        errorIfDuplicateHash: true,
-        transactions: [{
-            type: TransactionTypeProperty.Deposit,
-            description: "Balance update",
-            destinationId: pageAccount.id,
-            amount: `${diff}`,
-            date: new Date(),
-        }]
-    }];
+    return pageBal! - oldBal;
+}
+
+export function getRowDesc(r: Element): string {
+    return "Balance update";
+}
+
+export function findBackToAccountsPageButton(): HTMLElement {
+    return undefined!;
 }

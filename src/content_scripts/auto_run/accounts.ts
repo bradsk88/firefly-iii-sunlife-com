@@ -1,6 +1,7 @@
 import {AutoRunState} from "../../background/auto_state";
-import {getAccountElements, getAccountName} from "../scrape/accounts";
+import {getAccountElements, getAccountName, shouldSkipScrape} from "../scrape/accounts";
 import {isSingleAccountBank} from "../../extensionid";
+import {navigating} from "../accounts";
 
 function findNextAccountElement(accountName: string): Element | undefined {
     // You probably shouldn't need to modify the function.
@@ -8,6 +9,9 @@ function findNextAccountElement(accountName: string): Element | undefined {
     // AFTER the last account whose transactions were scraped.
     let foundScraped = false;
     for (const button of getAccountElements()) {
+        if (shouldSkipScrape(button)) {
+            continue;
+        }
         if (!accountName) {
             return button;
         }
@@ -28,6 +32,9 @@ function navigateToAccount(
 }
 
 export function openAccountForAutoRun() {
+    if (navigating) {
+        return;
+    }
     // Be careful changing this function. The auto run orchestration is fragile.
     chrome.runtime.sendMessage({action: "get_auto_run_tx_last_account"})
         .then(account => findNextAccountElement(account))
@@ -36,12 +43,11 @@ export function openAccountForAutoRun() {
                 navigateToAccount(accountElement);
                 return;
             }
-            if (isSingleAccountBank) {
-                return;
+            if (isSingleAccountBank || !accountElement) {
+                chrome.runtime.sendMessage({
+                    action: "complete_auto_run_state",
+                    state: AutoRunState.Transactions,
+                });
             }
-            chrome.runtime.sendMessage({
-                action: "complete_auto_run_state",
-                state: AutoRunState.Transactions,
-            });
         });
 }
