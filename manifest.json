@@ -3,9 +3,13 @@
   "version": "1.0",
   "description": "Scrapes account and transaction data from Sun Life RRSP (Canada) into Firefly III",
   "permissions": [
-    "storage",
-    "tabs"
+    "storage"
   ],
+  "externally_connectable": {
+    "ids": [
+      "kcghjdbnjdaabfigmmjgmgiaehjidpoh"
+    ]
+  },
   "options_page": "options.html",
   "optional_host_permissions": [
     "http://*/*",
