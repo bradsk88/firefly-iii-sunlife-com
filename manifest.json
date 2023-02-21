@@ -21,19 +21,19 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.sunnet.sunlife.com/mbrportal/req/secure/pphp/personalizedWelcome"],
+      "matches": ["https://*.sunlife.com/*"],
       "js": ["./dist/auto.js"]
     },
     {
-      "matches": ["https://www.sunnet.sunlife.com/mbrportal/req/secure/pphp/personalizedWelcome"],
+      "matches": ["https://*.sunlife.com/*"],
       "js": ["./dist/accounts.js"]
     },
     {
-      "matches": ["https://www.sunnet.sunlife.com/mbrportal/req/secure/pphp/personalizedWelcome"],
+      "matches": ["https://*.sunlife.com/*"],
       "js": ["./dist/transactions.js"]
     },
     {
-      "matches": ["https://www.sunnet.sunlife.com/mbrportal/req/secure/pphp/personalizedWelcome"],
+      "matches": ["https://*.sunlife.com/*"],
       "js": ["./dist/opening.js"]
     }
   ],
