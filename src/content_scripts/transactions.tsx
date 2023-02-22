@@ -34,7 +34,7 @@ export function scrapeTransactionsFromPage(
         let srcId: string | undefined = undefined;
         let destId: string | undefined = pageAccount.id;
 
-        const amount = getRowAmount(pageAccount, r);
+        const amount = getRowAmount(r, pageAccount);
         if (amount < 0) {
             tType = TransactionTypeProperty.Withdrawal;
             srcId = pageAccount.id;
