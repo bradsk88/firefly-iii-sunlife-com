@@ -64,7 +64,7 @@ async function doScrape(isAutoRun: boolean): Promise<TransactionScrape> {
         action: "list_accounts",
     });
     const acct = await getCurrentPageAccount(accounts);
-    const txs = await scrapeTransactionsFromPage(acct);
+    const txs = scrapeTransactionsFromPage(acct);
     pageAlreadyScraped = true;
     await chrome.runtime.sendMessage({
             action: "store_transactions",
