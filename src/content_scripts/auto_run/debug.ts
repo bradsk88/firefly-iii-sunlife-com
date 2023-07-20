@@ -33,5 +33,5 @@ export function debugLog(s: string, ...vars: any): void {
     if (!debugAutoRun) {
         return;
     }
-    console.debug(s, ...vars);
+    console.trace(s, ...vars);
 }

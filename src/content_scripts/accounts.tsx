@@ -8,13 +8,12 @@ import {
     getAccountElements,
     getAccountName,
     getButtonDestination,
-    getOpeningBalance, isPageReadyForScraping
+    getOpeningBalance,
+    isPageReadyForScraping
 } from "./scrape/accounts";
 import {openAccountForAutoRun} from "./auto_run/accounts";
-import {runOnURLMatch} from "../common/buttons";
 import {runOnContentChange} from "../common/autorun";
 import {debugLog} from "./auto_run/debug";
-import {extensionBankName} from "../extensionid";
 
 let pageAlreadyScraped = false;
 export let navigating = false;
@@ -40,7 +39,7 @@ async function scrapeAccountsFromPage(isAutoRun: boolean): Promise<AccountStore[
             openingBalanceBalance = `${openingBalance.balance}`;
         }
         const as: AccountStore = {
-            name: `${extensionBankName} - ${accountName}`,
+            name: `${accountName}`,
             accountNumber: null,
             openingBalance: openingBalanceBalance,
             openingBalanceDate: openingBalance?.date,
@@ -97,8 +96,8 @@ function enableAutoRun() {
                     state: AutoRunState.Accounts,
                 }))
                 .then(() => openAccountForAutoRun())
-                .catch(() => {
-                    console.log('Error from account scrape. Will try again on next redraw')
+                .catch((err) => {
+                    console.trace('Error from account scrape. Will try again on next redraw', err)
                 });
         } else if (state === AutoRunState.Transactions) {
             openAccountForAutoRun();
@@ -106,20 +105,7 @@ function enableAutoRun() {
     });
 }
 
-const accountsUrl = 'mbrportal/req/secure/pphp/personalizedWelcome';
-
-runOnURLMatch(
-    'mbrportal/req/secure/pphp/personalizedWelcome',
-    () => {
-        if (!!document.getElementById(buttonId)) {
-            return;
-        }
-        pageAlreadyScraped = false;
-        navigating = false;
-        addButton();
-    },
-);
-
+const accountsUrl = 'client-investment-portfolio';
 
 runOnContentChange(
     accountsUrl,

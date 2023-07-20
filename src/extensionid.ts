@@ -4,5 +4,5 @@ export const autoRunStartURL = 'https://www.sunnet.sunlife.com/signin/mysunlife/
 export const extensionPrimaryColorHex = 'febe10';
 export const extensionSecondaryColorHex = '003946';
 export const isSingleAccountBank = true;
-export const extensionBankName = `SunLife RRSP`;
+export const extensionBankName = `Sun Life`;
 export const hubExtensionId = 'kcghjdbnjdaabfigmmjgmgiaehjidpoh';

@@ -1,17 +1,26 @@
-import {sha512} from "js-sha512";
 import {OpeningBalance} from "../../background/firefly_export";
 import {priceFromString} from "../../common/prices";
+import {extensionBankName} from "../../extensionid";
+import {debugLog} from "../auto_run/debug";
 
 export function getButtonDestination(): Element {
-    return document.querySelector("div.content-links:first-child")!
+    let element = document.querySelector("#investment-main-content > div > div.workplace-investment > div.plan-accounts > div > div.account-header.header-end-line > div");
+    debugLog("Will add account button to", element);
+    return element!
 }
 
 export function isPageReadyForScraping(): boolean {
-    return true;
+    let element = document.querySelector('#investment-main-content > div > div.workplace-investment > div.plan-accounts > div > div.accountDetails > div');
+    if (!element) {
+        debugLog("Page is not ready for scraping", element);
+    }
+    return !!element;
 }
 
 export function getAccountElements(): Element[] {
-    return Array.from(document.querySelectorAll("div#workplace div.product-links div.row").values());
+    let elements = Array.from(document.querySelectorAll("#investment-main-content > div > div.workplace-investment > div.plan-accounts").values());
+    debugLog("Will scan account elements: ", elements);
+    return elements;
 }
 
 export function shouldSkipScrape(accountElement: Element): boolean {
@@ -21,11 +30,11 @@ export function shouldSkipScrape(accountElement: Element): boolean {
 export function getAccountName(
     accountElement: Element,
 ): string {
-    let trimmed = accountElement.querySelector("div.prodName")!.textContent!
+    let trimmed = accountElement.querySelector("a.product-name")!.textContent!
         .trim()
         .replace("\n", "")
         .replace("\t", "");
-    return `Sun Life: ${trimmed}`;
+    return `${extensionBankName} - ${trimmed}`;
 }
 
 export function getOpeningBalance(
@@ -35,7 +44,7 @@ export function getOpeningBalance(
         accountNumber: "",
         accountName: getAccountName(accountElement),
         balance: priceFromString(
-            accountElement.querySelector("div.balance-area")!.textContent!,
+            accountElement.querySelector("span.account-fund-total")!.textContent!,
         ),
         date: new Date(),
     }

@@ -130,7 +130,7 @@ function enableAutoRun() {
     });
 }
 
-const txPage = 'mbrportal/req/secure/pphp/personalizedWelcome';
+const txPage = 'client-investment-portfolio';
 
 runOnURLMatch(txPage, () => pageAlreadyScraped = false);
 

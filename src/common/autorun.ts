@@ -22,7 +22,7 @@ export function runOnContentChange(
 ): void {
     if (!!observeTarget && !observeTarget()) {
         setTimeout(() => {
-            debugLog(`observe target is missing [debugName: "${debugName}"]`)
+            // debugLog(`observe target is missing [debugName: "${debugName}"]`)
             runOnContentChange(urlPath, func, observeTarget, debugName);
         }, 500)
         return;
@@ -35,10 +35,10 @@ export function runOnContentChange(
     let callback = () => {
         let curUrl = window.location.href.split('?')[0];
         if (curUrl.includes(urlPath)) {
-            debugLog(window.location.href, 'matches (', urlPath, `) [debugName: "${debugName}"]`)
+            debugLog(curUrl, 'matches (', urlPath, `) [debugName: "${debugName}"]`)
             func();
         } else {
-            debugLog(window.location.href, ' is not a match for', urlPath, `[debugName: "${debugName}"]`)
+            debugLog(curUrl, ' is not a match for', urlPath, `[debugName: "${debugName}"]`)
         }
     };
     addLocationObserver(callback, true, observeTarget());
